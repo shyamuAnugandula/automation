@@ -1,0 +1,23 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+firefox_options = webdriver.FirefoxOptions()
+firefox_options.add_argument("--private")
+# driver = webdriver.Firefox(executable_path='/home/tr-dt-071/PycharmProjects/My_projects/venv/bin/geckodriver',firefox_options=firefox_options)
+driver = webdriver.Chrome(executable_path='C:/Users/DELL/Desktop/Python_program/Pythonprojects/venv/Scripts/chromedriver.exe')
+# driver = webdriver.Firefox(executable_path = '/home/tr-dt-071/PycharmProjects/My_projects/venv/bin/geckodriver')
+driver.get('http://filmgrapevine.com/health.html')
+driver.switch_to_frame(0)
+# driver._switch_to.frame(0)
+# elem=WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@href,'beta-bidder.vrtzads.com')]/img[contains(@src,'creative.vrtzads.com')]")))
+elem=WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@href,'clk.vrtzads.com')]/img[contains(@src,'creative.vrtzads.com')]")))
+time.sleep(3)
+elem.click()
+print(elem)
+time.sleep(7)
+size = driver.findelement(By.tagName("iframe")).size();
+driver.quit()
