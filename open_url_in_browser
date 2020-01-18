@@ -1,0 +1,6 @@
+from selenium import webdriver
+#driver = webdriver.Firefox(executable_path = '/home/tr-dt-071/PycharmProjects/My_projects/venv/bin/geckodriver') # to open in firefox
+driver = webdriver.Chrome(executable_path='C:/Users/DELL/Desktop/Python_program/Pythonprojects/venv/Scripts/chromedriver.exe') # to open in Chrome
+url = "http://facebook.com" # url to be open
+driver.get(url) # open url on page
+driver.close() # close the chrome browser after execution
