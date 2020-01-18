@@ -1,0 +1,17 @@
+import requests
+
+win_url = input("Enter your win url : ")  # paste win url to be called
+impression_url = input("Enter your impression url") # paste impression url to be called
+click_url = input("Enter your click url") # paste click url
+cdn_imp_url = input("Enter your cdn_impression url") # paste cdn url
+vertoz_sync_url = input("Enter your vertoz cookie sync url") # paste vertoz_sync_url
+hit_url = []
+
+list = [win_url,impression_url,click_url,cdn_imp_url,vertoz_sync_url] # list of url to hit
+for i in list:  # to get the list of url to be called
+    if len(i)>0: # will append variable which is not empty
+        hit_url.append(i)
+print(hit_url)
+for i in hit_url: # will call only for which input is given
+  response = requests.get(i) # get request will be called
+  print(f"response of {i} : {response}") # printing response on console
