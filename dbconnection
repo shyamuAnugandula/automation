@@ -1,0 +1,9 @@
+import pymysql
+conn = pymysql.connect(host=f"{ip_address}", user='root', passwd=f"{db_user_password}", db=f"{db_database_name}")
+cur = conn.cursor()
+
+cur.execute("select * from tbl_wurfl_browser_master where browser_name_version in (select mobile_browser from tbl_wurfl_all_device_information);")
+for r in cur: # to print result in each line as it would be in array
+    print(r) 
+cur.close()
+conn.close() # closing connection
