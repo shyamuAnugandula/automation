@@ -3,7 +3,8 @@ day = 20
 month = 09
 year = 2019
 conn = connect(host=host_name, port=port_number, database='database_name',auth_mechanism='GSSAPI',kerberos_service_name='impala')
-cursor1 = conn.cursor()
+cursor1 = conn.cursor() 
 cursor1.execute("select day,month,year,sum(bidcount),sum(win),sum(impression),sum(click),sum(conversion),sum(spend) from tbl_campaign_master where year="+str(year)+" and month="+str(month)+" and day in("+str(day)+") group by 1,2,3 order by 1,2,3")
 results = cursor1.fetchall()
 print(results)
+conn.close () # to close the connection
