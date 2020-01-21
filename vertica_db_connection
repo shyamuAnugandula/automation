@@ -1,0 +1,17 @@
+import vertica_python
+#####CONNECTION TO VERTICA###
+        day=01
+        month=12
+        year=2019
+        conn_info = {'host': f'{vertica_ip}',
+                     'port': port_num,
+                     'user': f'{username}',
+                     'password': f'{user_name_password}',
+                     'database': f'{database_name}',
+                     'ssl': False}
+        conn = vertica_python.connect(**conn_info)
+        cur = conn.cursor()
+        cur.execute("select day,month,year,sum(bidcount),sum(win),sum(impression),sum(click),sum(conversion),sum(spend) from tbl_campaign_master where year="+str(year)+" and month="+str(month)+" and day in("+str(day)+") group by 1,2,3 order by 1,2,3")
+        for i in cur.iterate():
+                d.append(i)
+        conn.close() # closing connection
