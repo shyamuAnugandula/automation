@@ -1,0 +1,24 @@
+import getpass
+player1 = input("Enter player1 name: ")
+player2 = input("Enter player2 name: ")
+player1_word= getpass.getpass("Select any 1 from Rock, Scissors and Paper:: ")
+player2_word= getpass.getpass("Select any 1 from Rock, Scissors and Paper:: ")
+words_list = ["rock" , "scissors" , "paper" ]
+def win_game(word1, word2):
+    if player1_word == player2_word:
+        return (f" Tie between {player1} and {player2}")
+    if player1_word.lower() == "rock" and player2_word.lower() == "scissors":
+        return (f" {player1} : {player1_word} wins the game ")
+    elif player1_word.lower() == "rock" and player2_word.lower() == "paper":
+        return (f" {player2} : {player2_word} wins the game ")
+    elif player1_word.lower() == "scissors" and player2_word.lower() == "paper":
+        return (f" {player1} : {player1_word} wins the game ")
+    elif player1_word.lower() == "scissors" and player2_word.lower() == "rock":
+        return (f" {player2} : {player2_word} wins the game ")
+    elif player1_word.lower() == "paper" and player2_word.lower() == "rock":
+        return (f" {player1} : {player1_word} wins the game ")
+    elif player1_word.lower() == "paper" and player2_word.lower() == "scissors":
+        return (f" {player2} : {player2_word} wins the game ")
+    elif player1_word.lower() not in words_list or player2_word.lower() not in words_list:
+        return (f"{player1} : {player1_word} or {player2} : {player2_word} - Invalid input! You have not entered rock, paper or scissors, try again")
+print(win_game(player1_word, player2_word))
