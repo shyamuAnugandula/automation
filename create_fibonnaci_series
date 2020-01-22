@@ -1,0 +1,21 @@
+# Write a program that asks the user how many Fibonnaci numbers to generate and then generates them.
+#Take this opportunity to think about how you can use functions. Make sure to ask the user to enter the number of numbers in the sequence
+#to generate.(Hint: The Fibonnaci seqence is a sequence of numbers where the next number in the sequence is the sum of the previous two 
+#numbers in the sequence. The sequence looks like this: 1, 1, 2, 3, 5, 8, 13, …)
+
+#Using Function
+user_input = int(input("Enter a number till Fibonnaci series should generate"))
+def fibonnaci(itterations):
+    fibonacci_series = [1, 1]
+    for i in range(itterations - 2):
+        third_number = fibonacci_series[len(fibonacci_series) - 2] + fibonacci_series[len(fibonacci_series) - 1]
+        fibonacci_series.append(third_number)  
+    return fibonacci_series
+print(fibonnaci(user_input))
+
+# Using for loop
+user_input = int(input("Enter a number till Fibonnaci series should generate"))
+fibonacci_numbers = [1 , 1]
+for i in range(user_input -2):
+    fibonacci_numbers.append(fibonacci_numbers[i] + fibonacci_numbers[i+1])
+print(fibonacci_numbers)
