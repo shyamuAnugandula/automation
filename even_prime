@@ -1,0 +1,6 @@
+def user_input(num):
+    if num%2 == 0 :
+        return (f"Given number {num} is even")
+    return (f"(Given number {num} is odd")
+number = int(input("Enter a number to check even or odd: "))
+print(user_input(number))
