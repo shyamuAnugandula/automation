@@ -1,0 +1,16 @@
+Name=input("Enter your Name: ")
+MobNumber=input("Enter your Mobile Number: ")
+Age=input("Enter your Age: ")
+if(Age>=str(18)):
+    print("Hurray! "+str(Name)+" You are eligible to play game")
+else:
+    print("Sorry "+str(Name)+" you are not eligible to play this game")
+TokenNumber=input("Enter Token Number: ")
+if(int(TokenNumber)<=20):
+    print("'Marvelous' "+str(Name)+" you have won 1crore!!!")
+elif(int(TokenNumber)>20 and int(TokenNumber)<=40):
+    print("Marvelous "+str(Name)+" you have won 50lakhs!!!")
+elif(int(TokenNumber)>40 and int(TokenNumber)<=40):
+    print("Marvelous "+str(Name)+" you have won 50lakhs!!!")
+else:
+    print("You have won 10Rupees")
