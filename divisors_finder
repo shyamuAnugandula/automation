@@ -1,0 +1,10 @@
+number = int(input("Enter a number: "))
+divisor_list = range(1,101)
+divisor = []
+for i in divisor_list:
+    if number % i == 0:
+        divisor.append(i)
+print("divisors are: ",divisor)
+
+
+
