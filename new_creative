@@ -1,0 +1,268 @@
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+import os
+import pdb
+import openpyxl
+
+from openpyxl import load_workbook
+try:
+    wb= openpyxl.load_workbook("new_creative.xlsx")
+    sheet= wb.active
+    max_row = sheet.max_row
+    print(max_row)
+    max_column = sheet.max_column
+    print(max_column)
+except:
+    print("Cannot find location of excel file")
+
+url = "console_url" #beta
+# url = "console_url" #live
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome()
+driver.maximize_window()
+driver.get(url)
+def login(name,password):
+    # driver.set_window_size(1400,1200)
+    driver.find_element_by_id("Emailid").send_keys(name)
+    driver.find_element_by_id("password").send_keys(password)
+    driver.find_element_by_id("Login").click()
+    driver.implicitly_wait(10)
+    driver.find_element_by_id("vertozmenu2").click() #campaign Management
+    driver.find_element_by_xpath("//*[@id='vertozmenu2']/ul/li[2]/a[2]").click() #creative tab on side filter
+    time.sleep(5)
+    try:
+        my_element = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.ID,"vertozmenu4"))) # checking wheather element is present or not
+        #find_element=driver.find_element_by_id("vertozmenu4")
+        print("successfully Login")
+        driver.implicitly_wait(10)
+    except:
+        print("Internal Server Error")
+
+
+def new_creative():
+    i = 1
+    for z in range(0,max_row-1):
+        driver.find_element_by_xpath("//*[@id='page-content']/div[3]/div[5]/a").click() # new_creative
+
+        #group
+        # group_option = "Self Managed Client"
+        # group_option = "Agency"
+        group_option = sheet.cell(row=i+1, column=1).value
+        print(group_option)
+        time.sleep(1)
+        if group_option == "Agency":
+            driver.find_element_by_xpath(f"//select[@id='groupsearch']/option[text()='{group_option}']").click()
+
+            #client by name
+            # client_name = "xyz"
+            # driver.find_element_by_id("client").send_keys(f"{client_name}")
+            # for j in range(1,10):
+            #     displayed_name = driver.find_element_by_xpath(f"//*[@id='campaignsPage']/div/div/div/div[1]/div[3]/div/div/div[1]/ul/li[{j}]")
+            #     derived_name = displayed_name.text
+            #     name_list1 =derived_name.split('-')
+            #     name_list = [s.rstrip() for s in name_list1]
+            #     if client_name.lower() == name_list[0].lower():
+            #         driver.find_element_by_xpath(f"//*[@id='campaignsPage']/div/div/div/div[1]/div[3]/div/div/div[1]/ul/li[{i}]/a").click()
+
+            # client by id
+            # client_id = 123456
+            # client_id = 123456
+            # advertiser_name = 123465
+            client_id = sheet.cell(row=i+1, column=2).value
+            advertiser_name = sheet.cell(row=i+1, column=3).value
+            #if it is agency then will work different
+
+            driver.find_element_by_xpath("//*[@id='agencyuser']").send_keys(client_id)
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='campaignsPage']/div/div/div/div[1]/div[4]/div/div/div[1]/ul/li/a").click()
+            driver.find_element_by_xpath("//*[@id='client1']").send_keys(advertiser_name)
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='campaignsPage']/div/div/div/div[1]/div[6]/div/div/div[1]/ul/li/a").click()
+
+
+            #Status
+            time.sleep(2)
+            # status_option = "Under review"
+            # status_option = "Approved"
+            status_option = sheet.cell(row=i+1, column=4).value
+            driver.find_element_by_xpath(f"//select[@name='astatus']/option[text()='{status_option}']").click()
+
+            #media channel
+            # media_channel = "display"
+            # media_channel = "mobile"
+            time.sleep(1)
+            media_channel = sheet.cell(row=i+1, column=5).value
+            if media_channel == "display":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[1]/label/img").click()
+            if media_channel == "mobile":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[2]/label/img").click()
+            if media_channel == "video":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[3]/label/img").click()
+            if media_channel == "native":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[4]/label/img").click()
+
+            #Creative_type
+            # creative_type = "image"
+            # creative_type = "javascript"
+            # creative_type = "rich media"
+            time.sleep(1)
+            creative_type = sheet.cell(row=i+1, column=6).value
+            if creative_type == "image":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[1]/input").click()
+            if creative_type == "javascript":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[2]/input").click()
+            if creative_type == "rich media":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[3]/input").click()
+
+            #Creative_name
+            time.sleep(2)
+            # creative_name = "xyz"
+            creative_name = sheet.cell(row=i+1, column=7).value
+            driver.find_element_by_xpath("//*[@id='creativeName']").send_keys(creative_name)
+
+            #Ad dimension
+            time.sleep(2)
+            # size = "336 x 280 Side Floater"
+            size = sheet.cell(row=i+1, column=8).value
+            driver.find_element_by_xpath(f"//select[@name='creativeSizeId']/option[text()='{size}']").click()
+
+            #Ad Category
+            time.sleep(5)
+            driver.find_element_by_xpath("//*[@id='multiselectnew']/div[1]/ul/li/input").click()
+            # driver.find_element_by_xpath("//*[@id='ui-select-choices-row-1-2']/div/span").click()
+            driver.find_element_by_xpath("/html/body/div[1]/div[3]/form[1]/div/div/div[3]/div/div/div/div[1]/div[14]/div/div[1]/div/ul/li[1]/ul/li[3]/div/span").click()
+            # driver.find_element_by_xpath("//*[@id="multiselectnew"]/div[1]/ul/li/input")
+
+            # image_url
+            time.sleep(2)
+            driver.find_element_by_id("uploader1").send_keys(os.getcwd() + f"/new_creative_images/images{i}.png") #uploading_image_file from system to console
+            # drv.find_element_by_id("IdOfInputTypeFile").send_keys(os.getcwd()+"\image.png") #uploading_image_file from system to console
+
+            #Creative Attributes
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='none']").click()
+
+            #Landing Page Url
+            # landing_url = "filmgrapevine.com"
+            landing_url = sheet.cell(row=i+1, column=9).value
+            driver.find_element_by_xpath("//*[@id='campaignsPage']/div/div/div/div[3]/div[2]/div/input").send_keys(landing_url)
+
+            #TLD
+            # tld = "filmgrapevine.com"
+            tld = sheet.cell(row=i+1, column=10).value
+            driver.find_element_by_xpath("//*[@id='creativeTld']").send_keys(tld)
+
+            #submit
+            driver.find_element_by_xpath("//*[@id='page-content']/button[1]").click()
+            print(f"new creative created : {creative_name}")
+            i += 1
+            time.sleep(4)
+
+        else:
+            driver.find_element_by_xpath(f"//select[@id='groupsearch']/option[text()='{group_option}']").click()
+
+            # client by name
+            # client_name = "xyzabc"
+            # driver.find_element_by_id("client").send_keys(f"{client_name}")
+            # for j in range(1,10):
+            #     displayed_name = driver.find_element_by_xpath(f"//*[@id='campaignsPage']/div/div/div/div[1]/div[3]/div/div/div[1]/ul/li[{j}]")
+            #     derived_name = displayed_name.text
+            #     name_list1 =derived_name.split('-')
+            #     name_list = [s.rstrip() for s in name_list1]
+            #     if client_name.lower() == name_list[0].lower():
+            #         driver.find_element_by_xpath(f"//*[@id='campaignsPage']/div/div/div/div[1]/div[3]/div/div/div[1]/ul/li[{i}]/a").click()
+
+            # client by id
+            # client_id = 123456
+            # client_id = 123456
+            # advertiser_name = 123456
+            client_id = sheet.cell(row=i + 1, column=2).value
+            advertiser_name = sheet.cell(row=i + 1, column=3).value
+            # if it is agency then will work different
+            driver.find_element_by_xpath("//*[@id='client']").send_keys(client_id)
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='campaignsPage']/div/div/div/div[1]/div[3]/div/div/div[1]/ul/li/a").click()
+
+            # Status
+            time.sleep(2)
+            # status_option = "Under review"
+            # status_option = "Approved"
+            status_option = sheet.cell(row=i + 1, column=4).value
+            driver.find_element_by_xpath(f"//select[@name='astatus']/option[text()='{status_option}']").click()
+
+            # media channel
+            # media_channel = "display"
+            # media_channel = "mobile"
+            time.sleep(1)
+            media_channel = sheet.cell(row=i + 1, column=5).value
+            if media_channel == "display":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[1]/label/img").click()
+            if media_channel == "mobile":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[2]/label/img").click()
+            if media_channel == "video":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[3]/label/img").click()
+            if media_channel == "native":
+                driver.find_element_by_xpath("//*[@id='mediaChannel']/div[4]/label/img").click()
+
+            # Creative_type
+            # creative_type = "image"
+            # creative_type = "javascript"
+            # creative_type = "rich media"
+            time.sleep(1)
+            creative_type = sheet.cell(row=i + 1, column=6).value
+            if creative_type == "image":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[1]/input").click()
+            if creative_type == "javascript":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[2]/input").click()
+            if creative_type == "rich media":
+                driver.find_element_by_xpath("//*[@id='creativeType']/span/label[3]/input").click()
+
+            # Creative_name
+            time.sleep(2)
+            # creative_name = "xyz"
+            creative_name = sheet.cell(row=i + 1, column=7).value
+            driver.find_element_by_xpath("//*[@id='creativeName']").send_keys(creative_name)
+
+            # Ad dimension
+            time.sleep(2)
+            # size = "336 x 280 Side Floater"
+            size = sheet.cell(row=i + 1, column=8).value
+            driver.find_element_by_xpath(f"//select[@name='creativeSizeId']/option[text()='{size}']").click()
+
+            # Ad Category
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='multiselectnew']/div[1]/ul/li/input").click()
+            # driver.find_element_by_xpath("//*[@id='ui-select-choices-row-1-2']/div/span").click()
+            driver.find_element_by_xpath("/html/body/div[1]/div[3]/form[1]/div/div/div[3]/div/div/div/div[1]/div[14]/div/div[1]/div/ul/li[1]/ul/li[3]/div/span").click()
+            # driver.find_element_by_xpath("//*[@id="multiselectnew"]/div[1]/ul/li/input")
+
+            # image_url
+            time.sleep(2)
+            driver.find_element_by_id("uploader1").send_keys(os.getcwd() + f"/new_creative_images/images{i}.png")  #uploading_image_file from system to console
+            # drv.find_element_by_id("IdOfInputTypeFile").send_keys(os.getcwd()+"\image.png") #uploading_image_file from system to console
+
+            # Creative Attributes
+            time.sleep(2)
+            driver.find_element_by_xpath("//*[@id='none']").click()
+
+            # Landing Page Url
+            landing_url = sheet.cell(row=i + 1, column=9).value
+            driver.find_element_by_xpath("//*[@id='campaignsPage']/div/div/div/div[3]/div[2]/div/input").send_keys(landing_url)
+
+            # TLD
+            tld = sheet.cell(row=i + 1, column=10).value
+            driver.find_element_by_xpath("//*[@id='creativeTld']").send_keys(tld)
+            time.sleep(2)
+
+            # submit
+            driver.find_element_by_xpath("//*[@id='page-content']/button[1]").click()
+            print(f"new creative created : {creative_name}")
+            time.sleep(4)
+            i += 1
+login(f"{email_id}",f"{password}") #beta  # need to insert valid email-id and password
+new_creative()
